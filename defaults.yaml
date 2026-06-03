@@ -1,0 +1,68 @@
+# cloud_dog_storage — Default Configuration
+# Non-secret defaults. Secrets MUST come from Vault or environment variables.
+# See PS-85 (85-storage-interfaces.md) and PS-80 (80-config-mgmt.md).
+
+storage:
+  # Backend type: local | s3 | webdav | ftp | google_drive
+  backend: "local"
+
+  # Root path (local: directory path; others: prefix)
+  root_path: ""
+
+  # Global timeout for remote backend operations (seconds)
+  timeout_s: 30
+
+  # TLS configuration for remote backends
+  tls:
+    insecure_skip_verify: false
+    ca_bundle_path: ""
+
+  # Local filesystem options
+  local:
+    # Minimum free disk space before writes (bytes). 0 = disabled.
+    min_free_bytes: 104857600  # 100 MB
+    # Default file permissions (octal)
+    file_permissions: "0644"
+    # Default directory permissions (octal)
+    dir_permissions: "0755"
+    # Subdirectory pattern for automatic file organisation (empty = disabled)
+    subdir_pattern: ""
+
+  # S3-compatible object storage
+  s3:
+    endpoint: ""
+    bucket: ""
+    region: "us-east-1"
+    access_key: ""      # From Vault: dev.storage.s3.access_key
+    secret_key: ""      # From Vault: dev.storage.s3.secret_key
+    prefix: ""
+
+  # WebDAV over HTTP(S)
+  webdav:
+    base_url: ""
+    username: ""         # From Vault: dev.storage.webdav.username
+    password: ""         # From Vault: dev.storage.webdav.password
+    move_retry_count: 2
+    move_retry_backoff_s: 0.35
+    move_probe_timeout_s: 5.0
+    move_retry_statuses: "408,409,423,425,429,500,502,503,504"
+
+  # FTP/FTPS
+  ftp:
+    host: ""
+    port: 21
+    username: ""         # From Vault: dev.storage.ftp.username
+    password: ""         # From Vault: dev.storage.ftp.password
+    base_dir: "/"
+    use_tls: false
+
+  # Google Drive v3
+  google_drive:
+    folder_id: ""
+    folder_url: ""
+    client_id: ""        # From Vault: dev.storage.google_drive.client_id
+    client_secret: ""    # From Vault: dev.storage.google_drive.client_secret
+    refresh_token: ""    # From Vault: dev.storage.google_drive.refresh_token
+    access_token: ""
+    redirect_uri: ""
+    token_uri: "https://oauth2.googleapis.com/token"
