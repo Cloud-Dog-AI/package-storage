@@ -298,14 +298,40 @@ class GoogleDriveStorage(StorageBackend):
             resp = self._request(
                 "GET",
                 "https://www.googleapis.com/drive/v3/files",
-                params={"q": query, "fields": "files(id,name,mimeType,size,parents)"},
+                params={
+                    "q": query,
+                    "fields": (
+                        "files(id,name,mimeType,size,parents,createdTime,modifiedTime,"
+                        "version,md5Checksum,webViewLink)"
+                    ),
+                },
             )
             resp.raise_for_status()
             files = resp.json().get("files", [])
             for item in files:
                 child_path = clean_posix(posixpath.join(logical_parent, item.get("name", "")))
                 child_is_dir = item.get("mimeType") == FOLDER_MIME
-                out.append(StorageEntry(path=child_path, is_dir=child_is_dir))
+                size = None
+                if not child_is_dir and item.get("size") is not None:
+                    try:
+                        size = int(item["size"])
+                    except (TypeError, ValueError):
+                        size = None
+                out.append(
+                    StorageEntry(
+                        path=child_path,
+                        is_dir=child_is_dir,
+                        size=size,
+                        created_at=item.get("createdTime"),
+                        modified_at=item.get("modifiedTime"),
+                        metadata={
+                            "drive_file_id": item.get("id"),
+                            "drive_revision": item.get("version"),
+                            "drive_md5_checksum": item.get("md5Checksum"),
+                            "drive_web_view_link": item.get("webViewLink"),
+                        },
+                    )
+                )
                 if recursive and child_is_dir:
                     queue.append((item["id"], child_path))
 

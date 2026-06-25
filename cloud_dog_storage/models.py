@@ -29,6 +29,12 @@ class StorageEntry:
 
     path: str
     is_dir: bool
+    size: int | None = None
+    modified_at: str | None = None
+    created_at: str | None = None
+    accessed_at: str | None = None
+    owner: str | None = None
+    metadata: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)

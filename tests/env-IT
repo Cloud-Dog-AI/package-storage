@@ -1,0 +1,20 @@
+# Integration tests env (non-secret)
+CLOUD_DOG_TEST_TIER=IT
+
+# Vault-backed storage integration mappings (resolved at runtime by config tooling).
+TEST_S3_ENDPOINT=${vault.dev.storage.s3.endpoint}
+TEST_S3_ACCESS_KEY=${vault.dev.storage.s3.access_key_id}
+TEST_S3_SECRET_KEY=${vault.dev.storage.s3.secret_access_key}
+# INFRA_GAP: Vault has no dev.storage.s3.bucket key in this environment.
+
+TEST_WEBDAV_URL=${vault.dev.storage.webdav.url}
+TEST_WEBDAV_USERNAME=${vault.dev.storage.webdav.username}
+TEST_WEBDAV_PASSWORD=${vault.dev.storage.webdav.password}
+
+TEST_FTP_HOST=${vault.dev.storage.ftp.host}
+TEST_FTP_USERNAME=${vault.dev.storage.ftp.username}
+TEST_FTP_PASSWORD=${vault.dev.storage.ftp.password}
+
+TEST_GDRIVE_CLIENT_ID=${vault.dev.storage.google_drive.client_id}
+TEST_GDRIVE_CLIENT_SECRET=${vault.dev.storage.google_drive.client_secret}
+# INFRA_GAP: Vault has no TEST_GDRIVE_FOLDER_ID / TEST_GDRIVE_REFRESH_TOKEN equivalents.

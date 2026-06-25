@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cloud_dog_storage"
-version = "0.1.7"
-description = "Cloud-Dog AI platform storage library — storage backends plus PS-94 transfer helpers"
+version = "0.1.0"
+description = "Cloud-Dog AI platform storage library — pluggable file/object storage backends (PS-85)"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [
@@ -51,7 +51,7 @@ target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM", "TCH", "RUF"]
-ignore = ["B008", "E501"]
+ignore = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -62,6 +62,3 @@ addopts = "-v --strict-markers"
 markers = [
     "env: test environment tier (UT, ST, IT, AT, QT)",
 ]
-
-[project.urls]
-"Source" = "https://github.com/cloud-dog-ai/platform-storage"
